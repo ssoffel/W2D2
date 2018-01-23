@@ -1,4 +1,6 @@
-require_relative 'piece'
+require_relative 'pieces'
+require 'byebug'
+
 class Board 
   
   attr_accessor :grid, :sentinel
@@ -10,10 +12,20 @@ class Board
     
     row_length.times do |row|
       col_length.times do |col|
-        if row == 0 || row == 1 || row == 6 || row == 7
-          self[[row, col]] = Piece.new
+        if row == 1 || row == 6 
+          self[[row, col]] = Pawn.new([row, col], self)
+        elsif (row == 0 ||  row==7 ) && (col==0 || col==7)
+          self[[row, col]] = Knight.new([row, col], self)
+        elsif (row == 0 ||  row== 7 ) && (col==1 || col==6)
+          self[[row, col]] = Bishop.new([row, col], self)
+        elsif (row == 0 ||  row==7 ) && (col==2 || col==5)
+          self[[row, col]] = Rook.new([row, col], self)
+        elsif (row == 0  && col== 4) || (row == 7 && col == 4)
+          self[[row, col]] = Queen.new([row, col], self)
+        elsif (row == 7  && col== 3) || (row == 0 && col == 3)
+          self[[row, col]] = King.new([row, col], self)
         else
-           self[[row, col]] = NullPiece.new
+          self[[row, col]] = NullPiece.new([row, col], self)
         end
       end  
     end
